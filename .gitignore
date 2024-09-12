@@ -1,3 +1,4 @@
+.idea
 # Django migrations
 !*/migrations/__init__.py
 */migrations/*.py
