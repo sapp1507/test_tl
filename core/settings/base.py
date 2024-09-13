@@ -1,12 +1,33 @@
+import os.path
 from pathlib import Path
 
-BASE_DIR = Path(__file__).resolve().parent.parent
+import environ
+import icecream
+from icecream import install
+
+install()
+ic.configureOutput(includeContext=True)
+
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
+
+env_file = os.path.join(BASE_DIR, '.env')
+environ.Env()
+environ.Env.read_env(env_file)
+
 
 SECRET_KEY = 'django-insecure-r(3kfc660jbm&(onf51*cfrpr_r#s*s^6uq_am66=peb6th-i&'
 
-DEBUG = True
+DEBUG = os.getenv('DEBUG', False) in ['true', 'True', '1']
 
-ALLOWED_HOSTS = []
+if not DEBUG:
+    icecream.ic.disable()
+
+ALLOWED_HOSTS = ['*']
+CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1']
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = True
+
+AUTH_USER_MODEL = 'user.User'
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -15,6 +36,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'user'
+    'core',
+    'employee',
 ]
 
 MIDDLEWARE = [
@@ -71,14 +95,16 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ru-ru'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Moscow'
 
 USE_I18N = True
 
 USE_TZ = True
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'assets')]
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

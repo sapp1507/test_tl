@@ -1,6 +1,6 @@
-from django.db import models
-
 from datetime import datetime as dt
+
+from django.db import models
 
 
 class SoftDeleteManager(models.Manager):
