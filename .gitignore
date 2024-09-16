@@ -3,6 +3,9 @@
 logs/*.log
 static/*
 
+# DBSqlite
+*.sqlite3
+
 # Django migrations
 !*/migrations/__init__.py
 */migrations/*.py
