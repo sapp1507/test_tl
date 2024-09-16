@@ -1,6 +1,7 @@
 .idea
 
 logs/*.log
+static/*
 
 # Django migrations
 !*/migrations/__init__.py
