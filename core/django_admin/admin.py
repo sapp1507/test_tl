@@ -15,17 +15,15 @@ class BaseAdminModel(ModelAdmin):
     def get_url_change_list(self, model, param):
         """Возвращает ссылку на список объектов модели."""
 
-        return reverse(
-            f'admin:{model._meta.app_label}_{model._meta.model_name}_changelist'
-        ) + '?' + urlencode(param)
+        return reverse('admin:%s_%s_changelist' % (
+            model._meta.app_label, model._meta.model_name)
+                       ) + '?' + urlencode(param)
 
     def get_url_change(self, model, args):
-        """Возвращает ссылку на объект модели."""
-
-        return reverse(
-            f'admin:{model._meta.app_label}_{model._meta.model_name}_change',
-            args=args
-        )
+        """Возвращает ссылку на объект модели"""
+        return reverse('admin:%s_%s_change' % (
+            model._meta.app_label, model._meta.model_name),
+                       args=args)
 
     def get_html_bool(self, value):
         icon = '/static/admin/img/icon-yes.svg' if value else '/static/admin/img/icon-no.svg'

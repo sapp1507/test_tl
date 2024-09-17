@@ -9,3 +9,6 @@ static/*
 # Django migrations
 !*/migrations/__init__.py
 */migrations/*.py
+
+# front
+front/node_modules/*

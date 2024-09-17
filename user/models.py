@@ -2,8 +2,11 @@ from django.contrib.auth.base_user import AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
 from django.db import models
 
+from user.managers import CustomUserManager
+
 
 class User(AbstractBaseUser, PermissionsMixin):
+    objects = CustomUserManager()
     email = models.EmailField(
         unique=True,
         null=False,

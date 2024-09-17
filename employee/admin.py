@@ -6,7 +6,7 @@ from employee.models import Job, Employee, Section
 
 @admin.register(Section)
 class SectionAdmin(BaseAdminModel):
-    fields = ['id', 'name', 'show_sub_sections']
+    list_display = ['id', 'name', 'level', 'show_sub_sections', 'show_parent']
 
     def show_sub_sections(self, section: Section):
         """Возвращает ссылку на список дочерних подразделений."""
@@ -17,10 +17,20 @@ class SectionAdmin(BaseAdminModel):
 
         url = self.get_url_change_list(
             Section,
-            {'sub_sections__id': section.id}
+            {'parent__id': section.id}
         )
         return self.get_link(url, f'{count} подразделений')
     show_sub_sections.short_description = 'Дочерние подразделения'
+
+    def show_parent(self, section: Section):
+        """Возвращает ссулку на родительское подразделение."""
+        if not section.parent:
+            return self.get_html_bool(False)
+
+        url = self.get_url_change(section, {section.parent.id: ''})
+        return self.get_link(url, section.parent)
+    show_parent.short_description = 'Родительское подразделение'
+
 
 
 @admin.register(Job)

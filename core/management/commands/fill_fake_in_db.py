@@ -1,6 +1,7 @@
 from django.core.management import BaseCommand
 from tqdm import tqdm
 
+from employee.enums import SectionsEnum
 from employee.models import Section, Job, Employee
 from utils.fake_generator import fake
 
@@ -22,11 +23,9 @@ class Command(BaseCommand):
         section_count = options['section_count']
         employee_count = options['employee_count']
 
-        sections = []
-        for _ in tqdm(range(section_count), desc='Создание Section'):
-            sections.append(Section.fake_generator())
-
-        Section.objects.bulk_create(sections)
+        for level in range(SectionsEnum.LEVEL_1.value, SectionsEnum.LEVEL_5.value+1):
+            for _ in tqdm(range(section_count // SectionsEnum.LEVEL_5.value), desc=f'Создание Sections level={level}'):
+                Section.fake_generator(level)
 
         sections = Section.objects.all()
 
