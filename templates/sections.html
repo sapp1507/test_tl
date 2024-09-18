@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div>
+        {% for section in sections %}
+            <div class="mb-5 w-100" id="div-{{ section.id }}">
+                <button
+                        class="btn btn-primary w-100"
+                        id="button-{{ section.id }}"
+                        onclick="fetchSections({{ section.id }}, {{ section.level }})"
+
+                >
+                    {{ section.name }} --уровень: {{ section.level }}--
+                </button>
+            </div>
+        {% endfor %}
+    </div>
+    <script>
+        const test = (id, level) => {
+            const div = document.getElementById(`${id}-${level}`)
+        }
+        const fetchSections = async (id, level) => {
+            const sub_sections = document.getElementById(`div-${id}`)
+            const response = await fetch(`/api/v1/sections/?parent=${id}`)
+            const data = await response.json()
+            for (let i in data) {
+                const elem = document.getElementById(`button-${data[i].id}`)
+                if (elem !== null && !elem.hidden && level !== 1){
+                    elem.remove()
+                } else {
+                    console.log(data[i])
+                    sub_sections.insertAdjacentHTML(
+                        'beforeend',
+                        `
+                <div class="mb-2 w-100" id="div-${data[i].id}">
+                <button class="btn btn-secondary w-100" onclick="fetchSections(${data[i].id}, ${data[i].level})" id="button-${data[i].id}">
+                ${data[i].name} --уровень ${data[i].level}</button>
+                `
+                    )
+                }
+                {# Получение сотрудников #}
+                const table = document.getElementById(`table-${id}`)
+                if (table !== null) {
+                    console.log(table)
+                    table.remove()
+                    return
+                }
+                const response = await fetch(`/api/v1/employee/?section=${id}`)
+                const d = await response.json()
+                const button = document.getElementById(`button-${id}`)
+                button.insertAdjacentHTML(
+                    'afterend',
+                    `<table id="table-${id}"><tr><th>ID</th><th>ФИО</th><th>Зарплата</th><th>Должность</th></tr></table>`
+                )
+                for (let elem in d) {
+                    const table = document.getElementById(`table-${id}`)
+                    console.log(table)
+                    table.insertAdjacentHTML(
+                        'beforeend',
+                        `
+                            <tr>
+                            <th>${d[elem].id}</th>
+                            <th>${d[elem].full_name}</th>
+                            <th>${d[elem].wage / 100}р</th>
+                            <th>${d[elem].job}</th>
+                            </tr>
+                            `
+                    )
+                }
+            }
+            //sub_sections.setAttribute('hidden', 'false')
+        }
+    </script>
+{% endblock %}

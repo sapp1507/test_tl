@@ -15,11 +15,11 @@ elif DATABASE == 'postgres':
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'HOST': os.environ.get('DB_HOST', '127.0.0.1'),
-            'NAME': os.environ.get('DB_NAME', 'postgres'),
-            'USER': os.environ.get('DB_USER', 'postgres'),
-            'PASSWORD': os.environ.get('DB_PASSWORD', '12wqasxz'),
-            'PORT': os.environ.get('DB_PORT', '5432'),
+            'HOST': os.environ.get('POSTGRES_HOST', '127.0.0.1'),
+            'NAME': os.environ.get('POSTGRES_DB', 'postgres'),
+            'USER': os.environ.get('POSTGRES_USER', 'postgres'),
+            'PASSWORD': os.environ.get('POSTGRES_PASSWORD', '12wqasxz'),
+            'PORT': os.environ.get('POSTGRES_PORT', '5432'),
         },
     }
 else:

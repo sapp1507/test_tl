@@ -23,13 +23,14 @@ if not DEBUG:
     icecream.ic.disable()
 
 ALLOWED_HOSTS = ['*']
-CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1']
+CSRF_TRUSTED_ORIGINS = ['http://localhost:8080']
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
 
 AUTH_USER_MODEL = 'user.User'
 
 INSTALLED_APPS = [
+    'corsheaders',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -42,8 +43,9 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.security.SecurityMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -56,7 +58,9 @@ ROOT_URLCONF = 'core.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            'templates'
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -106,5 +110,4 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'assets')]
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
